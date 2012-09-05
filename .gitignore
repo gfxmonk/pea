@@ -1,7 +1,98 @@
-.tags
-*.pyc
+# Python #
+##########
+*.EGG
+*.EGG-INFO
+*.egg
 *.egg-info
-0inst
-screenshot.png
-*-local.xml
+*.mo
+*.pyc
+*.pyd
+*.pyo
+*.tmp*
+/.pip-download-cache
+/local-pypi
+.Python
+.bzr
+.coverage
+.coverage.*
+.hg
+.installed.cfg
+.mr.developer.cfg
+.nose-stopwatch-times
+.svn
+nosetests.xml
+/build
+/reports
+/share
+/tests.pylintrc
+/tmp
+/uml
+bin
+/lib
+develop-eggs
 dist
+doc/doctrees
+doc/html
+doc/source/generated*
+downloads
+eggs
+fake-eggs
+htmlcov
+include
+parts
+pip-log.txt
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.deb
+*.dmg
+*.gz
+*.iso
+#*.jar
+*.rar
+*.tar
+*.tgz
+*.zip
+/RELEASE-VERSION
+evo/evo_version.py
+deb_dist
+/src
+worker_entry_points.txt
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+man/man1/nosetests.1
+
+# OS generated files #
+######################
+.DS_Store
+Icon?
+Thumbs.db
+ehthumbs.db
+
+# Editor generated files #
+##########################
+*.bak
+*.swm
+*.swn
+*.swo
+*.swp
+*~
+.ropeproject
+.idea
+
+# Pylint files #
+################
+tests.pylintrc
+evo_lint.txt
+tests_lint.txt
+
+# PEP8 files #
+##############
+pep8.txt
