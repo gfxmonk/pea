@@ -1,7 +1,7 @@
 from mock import patch, Mock
-import unittest2 as unittest
 
 from pea import formatter
+from pea.compat import unittest
 
 
 ####

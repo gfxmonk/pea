@@ -1,4 +1,4 @@
-import unittest2 as unittest
+from compat import unittest
 
 from pea.formatter import PeaFormatter
 

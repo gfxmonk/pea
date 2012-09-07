@@ -1,6 +1,6 @@
 from mock import MagicMock, patch
-import unittest2 as unittest
 
+from pea.compat import unittest
 from pea.context import World, StepCollectionWrapper, step
 
 
