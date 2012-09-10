@@ -17,9 +17,9 @@ Benefits of ``pea`` over ``lettuce``, ``cucumber``, etc:
 
 - It's a really trivial library (thus the name). It doesn't do very much,
   so it probably doesn't have many bugs
-  
+
 - Your features are just python code:
-  
+
   - No "BDD language parser" needed
   - No regular expressions
   - Stack traces make sense
@@ -29,7 +29,7 @@ Benefits of ``pea`` over ``lettuce``, ``cucumber``, etc:
   - Managing and renaming functions is much easier than managing regexes
   - You can use whatever abstractions you like
   - You can use rich python objects as arguments, instead of parsing strings
-     
+
 - It doesn't need its own test runner; so you can just use `nose`_ to run it
   alongside your unit tests
 
@@ -37,7 +37,9 @@ Benefits of ``pea`` over ``lettuce``, ``cucumber``, etc:
 So how do I use it?
 --------------------------------------
 
-Here's a minimal example::
+Here's a minimal example:
+
+.. code:: python
 
 	from pea import *
 
@@ -45,7 +47,7 @@ Here's a minimal example::
 	def I_go_to_the_store():
 		world.location='store'
 		world.cart = []
-	
+
 	@step
 	def I_buy_some(item):
 		world.cart.append(item)
@@ -53,7 +55,7 @@ Here's a minimal example::
 	@step
 	def I_go_home():
 		world.location = 'home'
-	
+
 	@step
 	def I_have_some_delicious(item):
 		assert item in world.cart
@@ -63,7 +65,7 @@ Here's a minimal example::
 
 	class TestShopping(TestCase):
 		def test_buying_some_peas(self):
-			
+
 			Given.I_go_to_the_store()
 			When.I_buy_some('peas')
 			And.I_go_home()
@@ -73,8 +75,6 @@ Here's a minimal example::
 
 .. image:: http://gfxmonk.net/dist/0install/pea/screenshot.png
 
-Typically you would put your steps in a separate python module (or many),
-but it's your choice.
 
 Basics:
 ^^^^^^^
@@ -85,10 +85,14 @@ Basics:
 
 Stuff to remember:
 ^^^^^^^^^^^^^^^^^^
-- Make sure you inherit from ``pea.TestCase`` (and call ``super`` from ``setUp``/``tearDown``),
+- Make sure you inherit from ``pea.TestCase`` (and call ``super`` from ``setUpClass``),
   as it takes care of resetting the ``world`` between tests.
 - You can use ``TestCase`` assertion methods on the world, too
   - e.g. ``world.assertEquals(expected, actual)``
+- You can only have one TestCase class in each module since it destroys
+  the step collection after the tests have been completed.  If you would like
+  to have more test classes on one module then create a base class that
+  inherits from ``TestCase`` and have your tests inherit from that.
 
 Pea works well with `rednose`_
 
