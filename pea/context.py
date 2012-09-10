@@ -1,59 +1,92 @@
-__all__ = [
-	'step',
-	'steps',
-	'world',
-	'TestCase',
-	'Given',
-	'When',
-	'Then',
-	'And',
-	]
+from compat import unittest
 
-from formatter import PeaFormatter
-import unittest
-class StepCollection(object):
-	def __setattr__(self, attr, val):
-		if hasattr(self, attr):
-			raise RuntimeError("step %s is already declared!" % (attr,))
-		return super(StepCollection, self).__setattr__(attr, val)
+from pea.formatter import PeaFormatter
 
-class Object(object): pass
+__all__ = (
+    'world',
+    'step',
+    'TestCase',
+    'Given',
+    'When',
+    'Then',
+    'And',
+)
+
+
 class World(unittest.TestCase):
-	def __init__(self):
-		self._reset()
-		super(World, self).__init__('_world')
-	
-	def _world(self): pass
 
-	def __getattr__(self, a):
-		return getattr(self._current, a)
+    def __init__(self):
+        self._reset()
+        super(World, self).__init__('_world')
 
-	def _reset(self):
-		self._current = Object()
+    def _world(self):
+        # Unittest2 Test case requires this method so we have it no-op
+        return False
 
-steps = StepCollection()
-world = World()
+    def _reset(self):
+        self._collection = {}
+
+    def __getattr__(self, val):
+        if val in self._collection:
+            return self._collection[val]
+        else:
+            raise AttributeError(
+                'The variable {0} was not located in the world object'
+                .format(val),
+            )
+
+    def __setattr__(self, attr, val):
+        if attr.startswith('_'):
+            super(World, self).__setattr__(attr, val)
+        else:
+            self._collection[attr] = val
+
 
 class StepCollectionWrapper(object):
-	def __init__(self, prefix):
-		self._prefix = prefix
 
-	def __getattr__(self, a):
-		attr = getattr(steps, a)
-		return attr(self._prefix)
+    steps = {}
+
+    def __init__(self, prefix):
+        self._prefix = prefix
+
+    def __getattr__(self, value):
+        if value not in StepCollectionWrapper.steps:
+            raise RuntimeError(
+                'Step function "{0}" was not defined'
+                .format(value)
+            )
+
+        attr = StepCollectionWrapper.steps[value]
+        return attr(self._prefix)
+
+
+class TestCase(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        global world
+        world = World()
+        StepCollectionWrapper.steps = {}
+
+
+world = World()
 
 Given = StepCollectionWrapper('Given')
 When = StepCollectionWrapper('When')
 Then = StepCollectionWrapper('Then')
 And = StepCollectionWrapper('And')
 
-class TestCase(unittest.TestCase):
-	def setUp(self):
-		global world
-		world._reset()
 
 def step(func):
-	#print "adding func: %s" % (func.__name__)
-	setattr(steps, func.__name__, lambda prefix: PeaFormatter.with_formatting(prefix, func))
-	return func
+    function_name = func.__name__
 
+    if function_name in StepCollectionWrapper.steps:
+        raise RuntimeError(
+            'The step function "{0}" was already defined in the module "{1}"'
+            .format(func.__name__, func.__module__),
+        )
+
+    function_closure = lambda prefix: PeaFormatter.with_formatting(prefix, func)
+    StepCollectionWrapper.steps[function_name] = function_closure
+
+    return func
