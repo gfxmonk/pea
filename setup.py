@@ -25,5 +25,6 @@ setup(
 		'setuptools',
 		'nose',
 		'python-termstyle',
+        'colorama',
 	],
 )

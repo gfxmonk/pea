@@ -1,4 +1,9 @@
+#Vim swap files
 .*.sw[l-p]
+
+#Python setuptools build dir.
+build/
+
 .tags
 *.pyc
 *.egg-info
