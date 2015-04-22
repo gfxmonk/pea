@@ -1,3 +1,4 @@
+.*.sw[l-p]
 .tags
 *.pyc
 *.egg-info
