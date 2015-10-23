@@ -21,10 +21,10 @@ class PeaFormatter(nose.plugins.Plugin):
 
 	def setOutputStream(self, stream):
 		type(self).stream = colorama.initialise.wrap_stream(stream,
-															convert=True,
-															strip=False,
-															autoreset=False,
-															wrap=True)
+								    convert=True,
+								    strip=False,
+								    autoreset=False,
+								    wrap=True)
 
 	def configure(self, options, conf):
 		self.enabled = options.verbosity >= 2
