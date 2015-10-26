@@ -4,12 +4,9 @@ import sys
 import nose
 import functools
 import termstyle
+import colorama
+import colorama.initialise
 
-failure = 'FAILED'
-error = 'ERROR'
-success = 'passed'
-skip = 'skipped'
-line_length = 77
 
 class PeaFormatter(nose.plugins.Plugin):
 	name = 'pea'
@@ -23,7 +20,11 @@ class PeaFormatter(nose.plugins.Plugin):
 		type(self).instance = self
 
 	def setOutputStream(self, stream):
-		type(self).stream = stream
+		type(self).stream = colorama.initialise.wrap_stream(stream,
+								    convert=True,
+								    strip=False,
+								    autoreset=False,
+								    wrap=True)
 
 	def configure(self, options, conf):
 		self.enabled = options.verbosity >= 2

@@ -1,3 +1,6 @@
+#Python setuptools build dir.
+build/
+
 .tags
 *.pyc
 *.egg-info

@@ -3,7 +3,7 @@
 from setuptools import *
 setup(
 	name='pea',
-	version='0.1.1',
+	version='0.1.1-mearns',
 	author_email='tim3d.junk+pea@gmail.com',
 	author='Tim Cuthbertson',
 	url='http://github.com/gfxmonk/pea/tree',
@@ -25,5 +25,6 @@ setup(
 		'setuptools',
 		'nose',
 		'python-termstyle',
+		'colorama',
 	],
 )
